@@ -22,8 +22,8 @@ export default function Home() {
   });
 
   useEffect(() => {
-    console.log('test')
-  }, [])
+    console.log("tes");
+  }, []);
 
   return (
     <>
@@ -64,7 +64,9 @@ export default function Home() {
               />
             </fieldset>
 
-            <button className={styles.button} type="submit">Cetak</button>
+            <button className={styles.button} type="submit">
+              Cetak
+            </button>
           </form>
         </div>
       </main>
