@@ -1,11 +1,13 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
+import { getSession, signIn } from "next-auth/react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ToastContainer, toast } from "react-toastify";
 
+import "react-toastify/dist/ReactToastify.css";
 import "picnic/picnic.min.css";
 
 import styles from "@/styles/Home.module.css";
@@ -17,9 +19,45 @@ export default function Login() {
 
   const router = useRouter();
 
-  const { register, handleSubmit, formState } = useForm<FormValues>({
+  const { register, handleSubmit, reset, formState } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
+
+  const onSubmit = async (data: FormValues) => {
+    await toast.promise(
+      signIn("credentials", {
+        redirect: false,
+        ...data,
+      }).then((result) => {
+        if (result?.ok) return Promise.resolve(result);
+
+        return Promise.reject(result);
+      }),
+      {
+        pending: "Mencoba login...",
+
+        success: {
+          render() {
+            return "Berhasil login 👌";
+          },
+        },
+
+        error: {
+          render({ data }) {
+            reset({ keepValues: true });
+            return data.error !== "CredentialsSignin"
+              ? data.error
+              : "Gagal login karena alasan yang tidak diketahui!";
+          },
+        },
+      }
+    );
+
+    if (!router.query?.callbackUrl) return router.replace("/");
+
+    const url = new URL(router.query?.callbackUrl as string);
+    router.replace(url.pathname as string);
+  };
 
   useEffect(() => {
     router.prefetch("/");
@@ -54,6 +92,7 @@ export default function Login() {
 
   return (
     <>
+      <ToastContainer />
       <Head>
         <title>Login</title>
         <meta name="description" content="Laman login" />
@@ -64,12 +103,13 @@ export default function Login() {
       <main className={styles.container}>
         <div>
           <h1 className={styles.heading}>Login</h1>
-          <form onSubmit={handleSubmit((d) => console.log(d))}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <fieldset className={styles.group}>
               <label>Email</label>
               <input
                 className={styles.input}
                 placeholder="Masukan Email"
+                disabled={formState.isSubmitting}
                 {...register("email")}
               />
               {(formState.errors?.email as unknown as boolean) && (
@@ -85,6 +125,7 @@ export default function Login() {
                 className={styles.input}
                 placeholder="Masukan Password"
                 type="password"
+                disabled={formState.isSubmitting}
                 {...register("password")}
               />
               {(formState.errors?.password as unknown as boolean) && (
@@ -94,7 +135,11 @@ export default function Login() {
               )}
             </fieldset>
 
-            <button className={styles.button} type="submit">
+            <button
+              disabled={formState.isSubmitting}
+              className={styles.button}
+              type="submit"
+            >
               Cetak
             </button>
           </form>
