@@ -26,6 +26,18 @@ export const serverSchema = z.object({
  */
 export const clientSchema = z.object({
   // NEXT_PUBLIC_BAR: z.string(),
+  NEXT_PUBLIC_NAMA_KETUM: z.string(),
+  NEXT_PUBLIC_NIS_KETUM: z.string(),
+
+  NEXT_PUBLIC_NAMA_SEKRE: z.string(),
+  NEXT_PUBLIC_NIS_SEKRE: z.string(),
+
+  NEXT_PUBLIC_NAMA_WAKASEK: z.string(),
+  NEXT_PUBLIC_PRONOUN_WAKASEK: z.enum(['Ibu', "Bapak"]),
+  NEXT_PUBLIC_NIP_WAKASEK: z.string(),
+
+  NEXT_PUBLIC_NAMA_PEMBINA: z.string(),
+  NEXT_PUBLIC_NIP_PEMBINA: z.string(),
 });
 
 /**
@@ -36,4 +48,16 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
   // NEXT_PUBLIC_BAR: process.env.NEXT_PUBLIC_BAR,
+  NEXT_PUBLIC_NAMA_KETUM: process.env.NEXT_PUBLIC_NAMA_KETUM,
+  NEXT_PUBLIC_NIS_KETUM: process.env.NEXT_PUBLIC_NIS_KETUM,
+
+  NEXT_PUBLIC_NAMA_SEKRE: process.env.NEXT_PUBLIC_NAMA_SEKRE,
+  NEXT_PUBLIC_NIS_SEKRE: process.env.NEXT_PUBLIC_NIS_SEKRE,
+
+  NEXT_PUBLIC_NAMA_WAKASEK: process.env.NEXT_PUBLIC_NAMA_WAKASEK,
+  NEXT_PUBLIC_PRONOUN_WAKASEK: process.env.NEXT_PUBLIC_PRONOUN_WAKASEK,
+  NEXT_PUBLIC_NIP_WAKASEK: process.env.NEXT_PUBLIC_NIP_WAKASEK,
+
+  NEXT_PUBLIC_NAMA_PEMBINA: process.env.NEXT_PUBLIC_NAMA_PEMBINA,
+  NEXT_PUBLIC_NIP_PEMBINA: process.env.NEXT_PUBLIC_NIP_PEMBINA,
 };

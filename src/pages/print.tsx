@@ -4,6 +4,10 @@ import Image from "next/image";
 import logoSMAN12 from "../../public/logo-sman12.png";
 import logoSCIO from "../../public/logo-scio12.png";
 
+import {env} from "@/env/client.mjs";
+
+console.log(env)
+
 const KopSurat = () => (
   <header>
     <div
@@ -180,7 +184,7 @@ export default function Print() {
           <p>Kepada Yth,</p>
           <p>Wakil Kepala Sekolah Bidang Sarana dan</p>
           <p>Prasarana</p>
-          <p>XXX XXXX XXX XXXXXX XXXXXXXXX XXXX</p>
+          <p>{env.NEXT_PUBLIC_PRONOUN_WAKASEK} {env.NEXT_PUBLIC_NAMA_WAKASEK}</p>
           <p>Di tempat</p>
         </div>
 
@@ -251,9 +255,8 @@ export default function Print() {
 
         <div className="content">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <BoxTandaTangan jabatan="Ketua Umum KIR" nama="Beliau 1" nomor="NIS. XXXXXX"/>
-
-            <BoxTandaTangan jabatan="Sekretaris KIR" nama="Beliau 2" nomor="NIS. XXXXXX"/>
+            <BoxTandaTangan jabatan="Ketua Umum KIR" nama={env.NEXT_PUBLIC_NAMA_KETUM} nomor={env.NEXT_PUBLIC_NIS_KETUM} />
+            <BoxTandaTangan jabatan="Sekretaris KIR" nama={env.NEXT_PUBLIC_NAMA_SEKRE} nomor={env.NEXT_PUBLIC_NIS_SEKRE} />
           </div>
         </div>
       </div>
@@ -299,9 +302,9 @@ export default function Print() {
 
         <div className="content">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <BoxTandaTangan jabatan="Wakasek bidang Sarana dan Prasarana" nama="Nama Wakasek" nomor="NIP.XXXXX" />
+            <BoxTandaTangan jabatan="Wakasek bidang Sarana dan Prasarana" nama={env.NEXT_PUBLIC_NIP_WAKASEK} nomor={env.NEXT_PUBLIC_NAMA_PEMBINA} />
 
-            <BoxTandaTangan jabatan="Pembina KIR" nama="Nama Pembina" nomor="NIP.XXXXX" />
+            <BoxTandaTangan jabatan="Pembina KIR" nama={env.NEXT_PUBLIC_NAMA_PEMBINA} nomor={env.NEXT_PUBLIC_NIP_PEMBINA} />
           </div>
         </div>
       </div>
