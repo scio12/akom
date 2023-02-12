@@ -33,7 +33,7 @@ export const clientSchema = z.object({
   NEXT_PUBLIC_NIS_SEKRE: z.string(),
 
   NEXT_PUBLIC_NAMA_WAKASEK: z.string(),
-  NEXT_PUBLIC_PRONOUN_WAKASEK: z.enum(['Ibu', "Bapak"]),
+  NEXT_PUBLIC_PRONOUN_WAKASEK: z.enum(["Ibu", "Bapak"]),
   NEXT_PUBLIC_NIP_WAKASEK: z.string(),
 
   NEXT_PUBLIC_NAMA_PEMBINA: z.string(),

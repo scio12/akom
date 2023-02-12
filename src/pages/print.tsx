@@ -1,12 +1,15 @@
+import qs from "qs";
 import Head from "next/head";
+import { GetServerSideProps } from "next";
+
+import { schema, type FormValues as IProps } from "@/schemas/home.schema";
 
 import Image from "next/image";
 import logoSMAN12 from "../../public/logo-sman12.png";
 import logoSCIO from "../../public/logo-scio12.png";
 
-import {env} from "@/env/client.mjs";
-
-console.log(env)
+import { env } from "@/env/client.mjs";
+import { env as envServer } from "@/env/server.mjs";
 
 const KopSurat = () => (
   <header>
@@ -31,7 +34,7 @@ const KopSurat = () => (
         <h4 style={{ margin: 0, fontSize: "14pt" }}>KELOMPOK ILMIAH REMAJA</h4>
         <h4 style={{ margin: 0, fontSize: "14pt" }}>SMA NEGERI 12 BEKASI</h4>
         <b>Jl. I Gusti Ngurah Rai kel.Kranji Kec. Bekasi Barat 17135</b>
-        <b>Telp : 021-8850863, Fax: 021-88964581</b>
+        <b>Telp: 021-8850863, Fax: 021-88964581</b>
         <b>Email: sman12kotabekasi@yahoo.co.id</b>
       </div>
       <div>
@@ -83,7 +86,11 @@ const BoxTandaTangan = ({
   </div>
 );
 
-export default function Print() {
+export default function Print({
+  tanggalPembuatan,
+  jadwalReguler,
+  waktuReguler,
+}: IProps) {
   return (
     <>
       <Head>
@@ -153,7 +160,7 @@ export default function Print() {
         <KopSurat />
 
         <div className="after-heading tanggal-pembuatan-surat">
-          <p>XXXXXX, XX XXXXXXXX XXXX</p>
+          <p>{tanggalPembuatan}</p>
         </div>
 
         <div className="content">
@@ -184,7 +191,9 @@ export default function Print() {
           <p>Kepada Yth,</p>
           <p>Wakil Kepala Sekolah Bidang Sarana dan</p>
           <p>Prasarana</p>
-          <p>{env.NEXT_PUBLIC_PRONOUN_WAKASEK} {env.NEXT_PUBLIC_NAMA_WAKASEK}</p>
+          <p>
+            {env.NEXT_PUBLIC_PRONOUN_WAKASEK} {env.NEXT_PUBLIC_NAMA_WAKASEK}
+          </p>
           <p>Di tempat</p>
         </div>
 
@@ -211,12 +220,12 @@ export default function Print() {
               <tr>
                 <td>Hari/Tanggal</td>
                 <td>&nbsp;&nbsp;:</td>
-                <td>XXXXX XX XXXXXXXX XXXX</td>
+                <td>{jadwalReguler}</td>
               </tr>
               <tr>
                 <td>Waktu</td>
                 <td>&nbsp;&nbsp;:</td>
-                <td>16.10 - selesai</td>
+                <td>{waktuReguler}</td>
               </tr>
               <tr>
                 <td>Tempat</td>
@@ -255,8 +264,16 @@ export default function Print() {
 
         <div className="content">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <BoxTandaTangan jabatan="Ketua Umum KIR" nama={env.NEXT_PUBLIC_NAMA_KETUM} nomor={env.NEXT_PUBLIC_NIS_KETUM} />
-            <BoxTandaTangan jabatan="Sekretaris KIR" nama={env.NEXT_PUBLIC_NAMA_SEKRE} nomor={env.NEXT_PUBLIC_NIS_SEKRE} />
+            <BoxTandaTangan
+              jabatan="Ketua Umum KIR"
+              nama={env.NEXT_PUBLIC_NAMA_KETUM}
+              nomor={env.NEXT_PUBLIC_NIS_KETUM}
+            />
+            <BoxTandaTangan
+              jabatan="Sekretaris KIR"
+              nama={env.NEXT_PUBLIC_NAMA_SEKRE}
+              nomor={env.NEXT_PUBLIC_NIS_SEKRE}
+            />
           </div>
         </div>
       </div>
@@ -302,12 +319,42 @@ export default function Print() {
 
         <div className="content">
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <BoxTandaTangan jabatan="Wakasek bidang Sarana dan Prasarana" nama={env.NEXT_PUBLIC_NIP_WAKASEK} nomor={env.NEXT_PUBLIC_NAMA_PEMBINA} />
+            <BoxTandaTangan
+              jabatan="Wakasek bidang Sarana dan Prasarana"
+              nama={env.NEXT_PUBLIC_NAMA_WAKASEK}
+              nomor={env.NEXT_PUBLIC_NIP_WAKASEK}
+            />
 
-            <BoxTandaTangan jabatan="Pembina KIR" nama={env.NEXT_PUBLIC_NAMA_PEMBINA} nomor={env.NEXT_PUBLIC_NIP_PEMBINA} />
+            <BoxTandaTangan
+              jabatan="Pembina KIR"
+              nama={env.NEXT_PUBLIC_NAMA_PEMBINA}
+              nomor={env.NEXT_PUBLIC_NIP_PEMBINA}
+            />
           </div>
         </div>
       </div>
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const url = context.req.url;
+
+  const search = url.startsWith("/print") ? url.replace("/print?", "") : null;
+  const parsed = search ? qs.parse(search) : null;
+
+  const tested = await schema.safeParseAsync(parsed);
+
+  if (envServer.NODE_ENV !== "development" && !tested.success) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: envServer.NODE_ENV !== "development" ? tested.data : parsed,
+  };
+};

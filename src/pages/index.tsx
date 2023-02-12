@@ -1,6 +1,8 @@
+import qs from "qs";
 import Head from "next/head";
-
+import { DateTime } from "luxon";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -11,13 +13,29 @@ import styles from "@/styles/Home.module.css";
 import { schema, type FormValues } from "@/schemas/home.schema";
 
 export default function Home() {
-  const { register, handleSubmit } = useForm<FormValues>({
+  const router = useRouter();
+
+  const { register, setValue, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(schema),
   });
 
   useEffect(() => {
-    console.log("tes");
+    const now = DateTime.now().setLocale("id");
+
+    console.log(now);
+
+    setValue(
+      "tanggalPembuatan",
+      `Bekasi, ${now.toLocaleString(DateTime.DATE_FULL)}`
+    );
+    setValue("waktuReguler", "16.10 - selesai");
   }, []);
+
+  const onSubmit = (data: FormValues) => {
+    const path = `/print?${qs.stringify(data)}`;
+
+    router.push(path);
+  };
 
   return (
     <>
@@ -30,12 +48,12 @@ export default function Home() {
 
       <main className={styles.container}>
         <div>
-          <form onSubmit={handleSubmit((d) => console.log(d))}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <fieldset className={styles.group}>
               <label>Tanggal Pembuatan Dokumen</label>
               <input
                 className={styles.input}
-                placeholder="Masukan Tanggal Pembuatan File"
+                placeholder="Tempat, Tanggal Bulan Tahun"
                 {...register("tanggalPembuatan")}
               />
             </fieldset>
@@ -44,7 +62,7 @@ export default function Home() {
               <label>Jadwal Reguler</label>
               <input
                 className={styles.input}
-                placeholder="Masukan Jadwal Reguler"
+                placeholder="Tanggal Bulan Tahun"
                 {...register("jadwalReguler")}
               />
             </fieldset>
