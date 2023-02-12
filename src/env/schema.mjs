@@ -16,7 +16,7 @@ export const serverSchema = z.object({
     process.env.VERCEL ? z.string() : z.string().url()
   ),
   ACCOUNT_EMAIL: z.string(),
-  ACCOUNT_PASSWORD: z.string()
+  ACCOUNT_PASSWORD: z.string(),
 });
 
 /**
