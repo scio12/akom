@@ -1,6 +1,5 @@
 import Head from "next/head";
 
-import { z } from "zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,12 +8,7 @@ import "picnic/picnic.min.css";
 
 import styles from "@/styles/Home.module.css";
 
-const schema = z.object({
-  tanggalPembuatan: z.string().min(1),
-  jadwalReguler: z.string().min(1),
-  waktuReguler: z.string().min(1),
-});
-type FormValues = z.infer<typeof schema>;
+import { schema, type FormValues } from "@/schemas/home.schema";
 
 export default function Home() {
   const { register, handleSubmit } = useForm<FormValues>({
