@@ -86,9 +86,11 @@ const BoxTandaTangan = ({
 );
 
 export default function Print({
+  suratKe,
   tanggalPembuatan,
   jadwalReguler,
   waktuReguler,
+  kelas,
 }: IProps) {
   return (
     <>
@@ -168,7 +170,7 @@ export default function Print({
               <tr>
                 <td>Nomor</td>
                 <td>&nbsp;&nbsp;:</td>
-                <td>XXXX/KIR-SMAN12BKS/X/2023</td>
+                <td>{suratKe}/KIR-SMAN12BKS/X/2023</td>
               </tr>
               <tr>
                 <td>Perihal</td>
@@ -292,14 +294,12 @@ export default function Print({
                 <td>1.</td>
                 <td>Ruang Kelas</td>
               </tr>
-              <tr>
-                <td></td>
-                <td>XII IPA 3</td>
-              </tr>
-              <tr>
-                <td></td>
-                <td>XII IPA 4</td>
-              </tr>
+              {kelas.map(({ value }) => (
+                <tr key={value}>
+                  <td></td>
+                  <td>{value}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

@@ -3,8 +3,8 @@ import Head from "next/head";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, useFieldArray } from "react-hook-form";
 
 import "picnic/picnic.min.css";
 
@@ -15,13 +15,20 @@ import { schema, type FormValues } from "@/schemas/home.schema";
 export default function Home() {
   const router = useRouter();
 
-  const { register, setValue, handleSubmit } = useForm<FormValues>({
+  const { control, register, setValue, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      kelas: [{ value: "XII IPA 4" }],
+    },
+  });
+  const { fields, append, remove } = useFieldArray({
+    name: "kelas",
+    control,
   });
 
   useEffect(() => {
     const now = DateTime.now().setLocale("id");
-    const isNextWeek = now.weekday > 3;
+    const isNextWeek = now.weekday >= 3;
 
     const nextSchedule = isNextWeek
       ? now.startOf("week").plus({ week: 1, day: 2 })
@@ -38,6 +45,7 @@ export default function Home() {
   }, []);
 
   const onSubmit = (data: FormValues) => {
+    console.log(data);
     const path = `/print?${qs.stringify(data)}`;
 
     router.push(path);
@@ -55,6 +63,15 @@ export default function Home() {
       <main className={styles.container}>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
+            <fieldset className={styles.group}>
+              <label>Surat Ke</label>
+              <input
+                className={styles.input}
+                placeholder="Urutan surat ke"
+                {...register("suratKe")}
+              />
+            </fieldset>
+
             <fieldset className={styles.group}>
               <label>Tanggal Pembuatan Dokumen</label>
               <input
@@ -80,6 +97,33 @@ export default function Home() {
                 placeholder="Masukan Waktu Reguler"
                 {...register("waktuReguler")}
               />
+            </fieldset>
+
+            <fieldset className={styles.group}>
+              <label>Kelas Yang Dipakai</label>
+              {fields.map((field, index) => (
+                <div
+                  key={field.id}
+                  style={{
+                    display: "inline-flex",
+                    width: "100%",
+                    gap: "0.3em",
+                  }}
+                >
+                  <button onClick={() => append({ value: "" })}>Tambah</button>
+                  {index > 0 ? (
+                    <button className="error" onClick={() => remove(index)}>
+                      Hapus
+                    </button>
+                  ) : null}
+                  <input
+                    style={{ width: "100%" }}
+                    className={styles.input}
+                    placeholder="Masukan Kelas reguler"
+                    {...register(`kelas.${index}.value` as const)}
+                  />
+                </div>
+              ))}
             </fieldset>
 
             <button className={styles.button} type="submit">
