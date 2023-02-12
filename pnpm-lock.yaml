@@ -6,6 +6,7 @@ specifiers:
   '@types/bcrypt': ^5.0.0
   '@types/luxon': ^3.2.0
   '@types/node': 18.13.0
+  '@types/qs': ^6.9.7
   '@types/react': 18.0.27
   '@types/react-dom': 18.0.10
   bcrypt: ^5.1.0
@@ -47,6 +48,7 @@ dependencies:
 devDependencies:
   '@types/bcrypt': 5.0.0
   '@types/luxon': 3.2.0
+  '@types/qs': 6.9.7
 
 packages:
 
@@ -318,6 +320,10 @@ packages:
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
     dev: false
+
+  /@types/qs/6.9.7:
+    resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
+    dev: true
 
   /@types/react-dom/18.0.10:
     resolution: {integrity: sha512-E42GW/JA4Qv15wQdqJq8DL4JhNpB3prJgjgapN3qJT9K2zO5IIAQh4VXvCEDupoqAwnz0cY4RlXeC/ajX5SFHg==}
