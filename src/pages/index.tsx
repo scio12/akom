@@ -21,11 +21,17 @@ export default function Home() {
 
   useEffect(() => {
     const now = DateTime.now().setLocale("id");
+    const isNextWeek = now.weekday > 3;
+
+    const nextSchedule = isNextWeek
+      ? now.startOf("week").plus({ week: 1, day: 2 })
+      : now.set({ day: 3 });
 
     setValue(
       "tanggalPembuatan",
       `Bekasi, ${now.toLocaleString(DateTime.DATE_FULL)}`
     );
+    setValue("jadwalReguler", nextSchedule.toLocaleString(DateTime.DATE_FULL));
     setValue("waktuReguler", "16.10 - selesai");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
