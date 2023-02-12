@@ -9,7 +9,6 @@ import logoSMAN12 from "../../public/logo-sman12.png";
 import logoSCIO from "../../public/logo-scio12.png";
 
 import { env } from "@/env/client.mjs";
-import { env as envServer } from "@/env/server.mjs";
 
 const KopSurat = () => (
   <header>
@@ -338,14 +337,12 @@ export default function Print({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const url = context.req.url as string;
-
-  const search = url.startsWith("/print") ? url.replace("/print?", "") : null;
-  const parsed = search ? qs.parse(search) : null;
+  const url = new URL(`http://example.com${context.req.url as string}`);
+  const parsed = qs.parse(url.search.replace("?", ""));
 
   const tested = await schema.safeParseAsync(parsed);
 
-  if (envServer.NODE_ENV !== "development" && !tested.success) {
+  if (!tested.success) {
     return {
       redirect: {
         destination: "/",
@@ -355,6 +352,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   return {
-    props: parsed as IProps,
+    props: tested.data,
   };
 };
