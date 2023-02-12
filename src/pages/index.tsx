@@ -22,13 +22,13 @@ export default function Home() {
   useEffect(() => {
     const now = DateTime.now().setLocale("id");
 
-    console.log(now);
-
     setValue(
       "tanggalPembuatan",
       `Bekasi, ${now.toLocaleString(DateTime.DATE_FULL)}`
     );
     setValue("waktuReguler", "16.10 - selesai");
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onSubmit = (data: FormValues) => {

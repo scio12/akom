@@ -44,9 +44,11 @@ export default function Login() {
 
         error: {
           render({ data }) {
-            reset({ keepValues: true });
-            return data.error !== "CredentialsSignin"
-              ? data.error
+            reset();
+
+            return (data as unknown as { error: string }).error !==
+              "CredentialsSignin"
+              ? (data as unknown as { error: string }).error
               : "Gagal login karena alasan yang tidak diketahui!";
           },
         },

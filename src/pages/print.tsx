@@ -338,7 +338,7 @@ export default function Print({
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const url = context.req.url;
+  const url = context.req.url as string;
 
   const search = url.startsWith("/print") ? url.replace("/print?", "") : null;
   const parsed = search ? qs.parse(search) : null;
@@ -355,6 +355,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   return {
-    props: envServer.NODE_ENV !== "development" ? tested.data : parsed,
+    props: parsed as IProps,
   };
 };
