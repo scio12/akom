@@ -38,6 +38,8 @@ export const clientSchema = z.object({
 
   NEXT_PUBLIC_NAMA_PEMBINA: z.string(),
   NEXT_PUBLIC_NIP_PEMBINA: z.string(),
+
+  NEXT_PUBLIC_FUNCTION_ENDPOINT: z.string().url(),
 });
 
 /**
@@ -60,4 +62,6 @@ export const clientEnv = {
 
   NEXT_PUBLIC_NAMA_PEMBINA: process.env.NEXT_PUBLIC_NAMA_PEMBINA,
   NEXT_PUBLIC_NIP_PEMBINA: process.env.NEXT_PUBLIC_NIP_PEMBINA,
+
+  NEXT_PUBLIC_FUNCTION_ENDPOINT: process.env.NEXT_PUBLIC_FUNCTION_ENDPOINT,
 };

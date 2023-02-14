@@ -1,10 +1,11 @@
-import qs from "qs";
 import Head from "next/head";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
-import { useRouter } from "next/router";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
+
+import type { GetServerSideProps } from "next";
+import { env } from "@/env/client.mjs";
 
 import "picnic/picnic.min.css";
 
@@ -12,9 +13,11 @@ import styles from "@/styles/Home.module.css";
 
 import { schema, type FormValues } from "@/schemas/home.schema";
 
-export default function Home() {
-  const router = useRouter();
+interface IProps {
+  cookies: { [key: string]: string };
+}
 
+export default function Home({ cookies }: IProps) {
   const { control, register, setValue, handleSubmit } = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -44,11 +47,19 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
-    const path = `/print?${qs.stringify(data)}`;
+  const onSubmit = async (pdfInfo: FormValues) => {
+    const blob = await fetch(
+      `${env.NEXT_PUBLIC_FUNCTION_ENDPOINT}/.netlify/functions/gen-pdf`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          pdfInfo,
+          userInfo: cookies,
+        }),
+      }
+    ).then((res) => res.blob());
 
-    router.push(path);
+    console.log(URL.createObjectURL(blob));
   };
 
   return (
@@ -135,3 +146,11 @@ export default function Home() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      cookies: context.req.cookies,
+    },
+  };
+};
