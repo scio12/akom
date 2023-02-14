@@ -35,7 +35,7 @@ export default function Home({ cookies }: IProps) {
 
     const nextSchedule = isNextWeek
       ? now.startOf("week").plus({ week: 1, day: 2 })
-      : now.set({ day: 3 });
+      : now.plus({ day: 3 - now.weekday });
 
     setValue(
       "tanggalPembuatan",
