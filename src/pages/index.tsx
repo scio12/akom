@@ -2,11 +2,13 @@ import Head from "next/head";
 import { DateTime } from "luxon";
 import { useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ToastContainer, toast } from "react-toastify";
 import { useForm, useFieldArray } from "react-hook-form";
 
 import type { GetServerSideProps } from "next";
 import { env } from "@/env/client.mjs";
 
+import "react-toastify/dist/ReactToastify.css";
 import "picnic/picnic.min.css";
 
 import styles from "@/styles/Home.module.css";
@@ -18,12 +20,13 @@ interface IProps {
 }
 
 export default function Home({ cookies }: IProps) {
-  const { control, register, setValue, handleSubmit } = useForm<FormValues>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      kelas: [{ value: "XII IPA 4" }],
-    },
-  });
+  const { control, register, setValue, handleSubmit, formState, reset } =
+    useForm<FormValues>({
+      resolver: zodResolver(schema),
+      defaultValues: {
+        kelas: [{ value: "XII IPA 4" }],
+      },
+    });
   const { fields, append, remove } = useFieldArray({
     name: "kelas",
     control,
@@ -48,18 +51,41 @@ export default function Home({ cookies }: IProps) {
   }, []);
 
   const onSubmit = async (pdfInfo: FormValues) => {
-    const blob = await fetch(
-      `${env.NEXT_PUBLIC_FUNCTION_ENDPOINT}/.netlify/functions/gen-pdf`,
-      {
+    const blob = await toast.promise(
+      fetch(`${env.NEXT_PUBLIC_FUNCTION_ENDPOINT}/.netlify/functions/gen-pdf`, {
         method: "POST",
         body: JSON.stringify({
           pdfInfo,
           userInfo: cookies,
         }),
-      }
-    ).then((res) => res.blob());
+      }).then((result) => result.blob()),
+      {
+        pending: "Mengunduh...",
+        success: "Berhasil mencetak file pdf 👌",
 
-    console.log(URL.createObjectURL(blob));
+        error: {
+          render() {
+            reset(
+              {},
+              {
+                keepValues: true,
+                keepIsSubmitted: false,
+              }
+            );
+
+            return "Gagal mencetak file pdf, coba lagi nanti";
+          },
+        },
+      }
+    );
+
+    const objUrl = URL.createObjectURL(blob);
+
+    const anchor = document.createElement("a");
+    anchor.setAttribute("download", "");
+    anchor.setAttribute("href", objUrl);
+
+    anchor.click();
   };
 
   return (
@@ -71,6 +97,8 @@ export default function Home({ cookies }: IProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <ToastContainer />
+
       <main className={styles.container}>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -79,6 +107,7 @@ export default function Home({ cookies }: IProps) {
               <input
                 className={styles.input}
                 placeholder="Urutan surat ke"
+                disabled={formState.isSubmitting}
                 {...register("suratKe")}
               />
             </fieldset>
@@ -88,6 +117,7 @@ export default function Home({ cookies }: IProps) {
               <input
                 className={styles.input}
                 placeholder="Tempat, Tanggal Bulan Tahun"
+                disabled={formState.isSubmitting}
                 {...register("tanggalPembuatan")}
               />
             </fieldset>
@@ -97,6 +127,7 @@ export default function Home({ cookies }: IProps) {
               <input
                 className={styles.input}
                 placeholder="Tanggal Bulan Tahun"
+                disabled={formState.isSubmitting}
                 {...register("jadwalReguler")}
               />
             </fieldset>
@@ -106,6 +137,7 @@ export default function Home({ cookies }: IProps) {
               <input
                 className={styles.input}
                 placeholder="Masukan Waktu Reguler"
+                disabled={formState.isSubmitting}
                 {...register("waktuReguler")}
               />
             </fieldset>
@@ -121,9 +153,18 @@ export default function Home({ cookies }: IProps) {
                     gap: "0.3em",
                   }}
                 >
-                  <button onClick={() => append({ value: "" })}>Tambah</button>
+                  <button
+                    onClick={() => append({ value: "" })}
+                    disabled={formState.isSubmitting}
+                  >
+                    Tambah
+                  </button>
                   {index > 0 ? (
-                    <button className="error" onClick={() => remove(index)}>
+                    <button
+                      className="error"
+                      disabled={formState.isSubmitting}
+                      onClick={() => remove(index)}
+                    >
                       Hapus
                     </button>
                   ) : null}
@@ -131,13 +172,18 @@ export default function Home({ cookies }: IProps) {
                     style={{ width: "100%" }}
                     className={styles.input}
                     placeholder="Masukan Kelas reguler"
+                    disabled={formState.isSubmitting}
                     {...register(`kelas.${index}.value` as const)}
                   />
                 </div>
               ))}
             </fieldset>
 
-            <button className={styles.button} type="submit">
+            <button
+              disabled={formState.isSubmitting}
+              className={styles.button}
+              type="submit"
+            >
               Cetak
             </button>
           </form>

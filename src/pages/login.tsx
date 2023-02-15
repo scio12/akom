@@ -44,7 +44,13 @@ export default function Login() {
 
         error: {
           render({ data }) {
-            reset();
+            reset(
+              {},
+              {
+                keepValues: true,
+                keepIsSubmitted: false,
+              }
+            );
 
             return (data as unknown as { error: string }).error !==
               "CredentialsSignin"

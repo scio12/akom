@@ -49,7 +49,13 @@ const KopSurat = () => (
           flexWrap: "wrap",
         }}
       >
-        <Image src={logoSCIO} alt="Logo SCIO 12" width={95} style={{ marginTop: "0.3em" }} priority />
+        <Image
+          src={logoSCIO}
+          alt="Logo SCIO 12"
+          width={95}
+          style={{ marginTop: "0.3em" }}
+          priority
+        />
       </div>
     </div>
 
