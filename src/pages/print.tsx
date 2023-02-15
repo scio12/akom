@@ -19,8 +19,14 @@ const KopSurat = () => (
         marginBottom: "0.3em",
       }}
     >
-      <div>
-        <Image src={logoSMAN12} alt="Logo SMAN 12 Bekasi" width={80} priority />
+      <div
+        style={{
+          display: "flex",
+          alignContent: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <Image src={logoSMAN12} alt="Logo SMAN 12 Bekasi" width={85} priority />
       </div>
       <div
         style={{
@@ -36,8 +42,14 @@ const KopSurat = () => (
         <b>Telp: 021-8850863, Fax: 021-88964581</b>
         <b>Email: sman12kotabekasi@yahoo.co.id</b>
       </div>
-      <div>
-        <Image src={logoSCIO} alt="Logo SMAN 12 Bekasi" width={85} priority />
+      <div
+        style={{
+          display: "flex",
+          alignContent: "center",
+          flexWrap: "wrap",
+        }}
+      >
+        <Image src={logoSCIO} alt="Logo SCIO 12" width={95} style={{ marginTop: "0.3em" }} priority />
       </div>
     </div>
 
@@ -61,8 +73,8 @@ const BoxTandaTangan = ({
     style={{
       display: "flex",
       flexDirection: "column",
-      minHeight: "200px",
-      minWidth: "200px",
+      minHeight: "190px",
+      minWidth: "190px",
     }}
   >
     <div>
@@ -153,128 +165,133 @@ export default function Print({
 
         .content p,
         .content i {
-          margin: 0.2em;
+          margin: 0.1em;
+        }
+
+        .spacer {
+          padding-left: 1cm;
+          padding-right: 1cm;
+          padding-bottom: 1cm;
         }
       `}</style>
 
       <div className="page">
         <KopSurat />
 
-        <div className="after-heading tanggal-pembuatan-surat">
-          <p>{tanggalPembuatan}</p>
-        </div>
+        <div className="spacer">
+          <div className="after-heading tanggal-pembuatan-surat">
+            <p>{tanggalPembuatan}</p>
+          </div>
 
-        <div className="content">
-          <table>
-            <tbody>
-              <tr>
-                <td>Nomor</td>
-                <td>&nbsp;&nbsp;:</td>
-                <td>{suratKe}/KIR-SMAN12BKS/X/2023</td>
-              </tr>
-              <tr>
-                <td>Perihal</td>
-                <td>&nbsp;&nbsp;:</td>
-                <td>Permohonan Peminjaman Ruang Kelas</td>
-              </tr>
-              <tr>
-                <td>Lampiran</td>
-                <td>&nbsp;&nbsp;:</td>
-                <td>1</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <div className="content">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Nomor</td>
+                  <td>&nbsp;&nbsp;:</td>
+                  <td>{suratKe}/KIR-SMAN12BKS/X/2023</td>
+                </tr>
+                <tr>
+                  <td>Perihal</td>
+                  <td>&nbsp;&nbsp;:</td>
+                  <td>Permohonan Peminjaman Ruang Kelas</td>
+                </tr>
+                <tr>
+                  <td>Lampiran</td>
+                  <td>&nbsp;&nbsp;:</td>
+                  <td>1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <br />
+          <br />
 
-        <div className="content">
-          <p>Kepada Yth,</p>
-          <p>Wakil Kepala Sekolah Bidang Sarana dan</p>
-          <p>Prasarana</p>
-          <p>
-            {env.NEXT_PUBLIC_PRONOUN_WAKASEK} {env.NEXT_PUBLIC_NAMA_WAKASEK}
-          </p>
-          <p>Di tempat</p>
-        </div>
+          <div className="content">
+            <p>Kepada Yth,</p>
+            <p>Wakil Kepala Sekolah Bidang Sarana dan</p>
+            <p>Prasarana</p>
+            <p>
+              {env.NEXT_PUBLIC_PRONOUN_WAKASEK} {env.NEXT_PUBLIC_NAMA_WAKASEK}
+            </p>
+            <p>Di tempat</p>
+          </div>
 
-        <br />
+          <br />
 
-        <div className="content">
-          <i>Assalamualaikum Warahmatullahi Wabarakatuh.</i>
-        </div>
+          <div className="content">
+            <i>Assalamualaikum Warahmatullahi Wabarakatuh.</i>
+          </div>
 
-        <br />
+          <br />
 
-        <div className="content">
-          <p>
-            Berkenaan dengan diselenggarakannya Reguler offline untuk
-            ekstrakulikuler KIR pada:
-          </p>
-        </div>
+          <div className="content">
+            <p>
+              Berkenaan dengan diselenggarakannya Reguler offline untuk
+              ekstrakulikuler KIR pada:
+            </p>
+          </div>
 
-        <br />
+          <br />
 
-        <div className="content">
-          <table>
-            <tbody>
-              <tr>
-                <td>Hari/Tanggal</td>
-                <td>&nbsp;&nbsp;:</td>
-                <td>{jadwalReguler}</td>
-              </tr>
-              <tr>
-                <td>Waktu</td>
-                <td>&nbsp;&nbsp;:</td>
-                <td>{waktuReguler}</td>
-              </tr>
-              <tr>
-                <td>Tempat</td>
-                <td>&nbsp;&nbsp;:</td>
-                <td>SMAN 12 BEKASI</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+          <div className="content">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Hari/Tanggal</td>
+                  <td>&nbsp;&nbsp;:</td>
+                  <td>{jadwalReguler}</td>
+                </tr>
+                <tr>
+                  <td>Waktu</td>
+                  <td>&nbsp;&nbsp;:</td>
+                  <td>{waktuReguler}</td>
+                </tr>
+                <tr>
+                  <td>Tempat</td>
+                  <td>&nbsp;&nbsp;:</td>
+                  <td>SMAN 12 BEKASI</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <br />
+          <br />
 
-        <div className="content">
-          <p>
-            Dengan ini kami mengajukan permohonan peminjaman ruang kelas (daftar
-            terlampir) untuk menyelanggarakan kegiatan tersebut.
-          </p>
-        </div>
+          <div className="content">
+            <p>
+              Dengan ini kami mengajukan permohonan peminjaman ruang kelas
+              (daftar terlampir) untuk menyelanggarakan kegiatan tersebut.
+            </p>
+          </div>
 
-        <br />
+          <br />
 
-        <div className="content">
-          <p>
-            Demikian surat ini kami ajukan, kurang lebihnya mohon maaf. Atas
-            kerja samanya kami
-          </p>
-          <p>ucapkan terima kasih.</p>
-        </div>
+          <div className="content">
+            <p>
+              Demikian surat ini kami ajukan, kurang lebihnya mohon maaf. Atas
+              kerja samanya kami
+            </p>
+            <p>ucapkan terima kasih.</p>
+          </div>
 
-        <br />
-        <br />
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <h3>Hormat Kami,</h3>
+          </div>
 
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <h3>Hormat Kami,</h3>
-        </div>
-
-        <div className="content">
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <BoxTandaTangan
-              jabatan="Ketua Umum KIR"
-              nama={env.NEXT_PUBLIC_NAMA_KETUM}
-              nomor={env.NEXT_PUBLIC_NIS_KETUM}
-            />
-            <BoxTandaTangan
-              jabatan="Sekretaris KIR"
-              nama={env.NEXT_PUBLIC_NAMA_SEKRE}
-              nomor={env.NEXT_PUBLIC_NIS_SEKRE}
-            />
+          <div className="content">
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <BoxTandaTangan
+                jabatan="Ketua Umum KIR"
+                nama={env.NEXT_PUBLIC_NAMA_KETUM}
+                nomor={env.NEXT_PUBLIC_NIS_KETUM}
+              />
+              <BoxTandaTangan
+                jabatan="Sekretaris KIR"
+                nama={env.NEXT_PUBLIC_NAMA_SEKRE}
+                nomor={env.NEXT_PUBLIC_NIS_SEKRE}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -284,51 +301,53 @@ export default function Print({
 
         <br />
 
-        <div className="content">
-          <p style={{ marginBottom: "0.4em" }}>Lampiran:</p>
-          <p>Daftar kelas yang akan dipinjam:</p>
+        <div className="spacer">
+          <div className="content">
+            <p style={{ marginBottom: "0.4em" }}>Lampiran:</p>
+            <p>Daftar kelas yang akan dipinjam:</p>
 
-          <table style={{ marginLeft: "2.5rem" }}>
-            <tbody>
-              <tr>
-                <td>1.</td>
-                <td>Ruang Kelas</td>
-              </tr>
-              {kelas.map(({ value }) => (
-                <tr key={value}>
-                  <td></td>
-                  <td>{value}</td>
+            <table style={{ marginLeft: "2.5rem" }}>
+              <tbody>
+                <tr>
+                  <td>1.</td>
+                  <td>Ruang Kelas</td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                {kelas.map(({ value }) => (
+                  <tr key={value}>
+                    <td></td>
+                    <td>{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
 
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <h3>Menyetujui,</h3>
-        </div>
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            <h3>Menyetujui,</h3>
+          </div>
 
-        <div className="content">
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <BoxTandaTangan
-              jabatan="Wakasek bidang Sarana dan Prasarana"
-              nama={env.NEXT_PUBLIC_NAMA_WAKASEK}
-              nomor={env.NEXT_PUBLIC_NIP_WAKASEK}
-            />
+          <div className="content">
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <BoxTandaTangan
+                jabatan="Wakasek bidang Sarana dan Prasarana"
+                nama={env.NEXT_PUBLIC_NAMA_WAKASEK}
+                nomor={env.NEXT_PUBLIC_NIP_WAKASEK}
+              />
 
-            <BoxTandaTangan
-              jabatan="Pembina KIR"
-              nama={env.NEXT_PUBLIC_NAMA_PEMBINA}
-              nomor={env.NEXT_PUBLIC_NIP_PEMBINA}
-            />
+              <BoxTandaTangan
+                jabatan="Pembina KIR"
+                nama={env.NEXT_PUBLIC_NAMA_PEMBINA}
+                nomor={env.NEXT_PUBLIC_NIP_PEMBINA}
+              />
+            </div>
           </div>
         </div>
       </div>
